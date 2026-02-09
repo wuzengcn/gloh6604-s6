@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Session 6: Markov model in cost-effective analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wu Zeng, MD, PHD" />
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/panelset-0.3.0/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.3.0/panelset.js"></script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/css/zuwm.css" type="text/css" />
+    <link rel="stylesheet" href="libs/css/zuwm-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: title-slide, center, middle
+
+# Session 6: Markov model in cost-effective analysis
+## &lt;br/&gt;
+### Wu Zeng, MD, PHD
+### Georgetown University
+
+### 2026/03/13
+
+---
+# Outline
+
+Why is a Markov model is needed
+
+What is Markov model 
+
+How to construct a Markov model 
+
+TreeAge for Markov model
+
+Exercise and case study
+
+---
+# Decision tree
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F1.png" width="60%"&gt;
+---
+# Think about a few examples ...
+
+- Bed net for malaria control in comparison with no bed net
+
+- New treatment regime of TB 
+
+- Vaccines for pneumonia
+
+---
+# Decision tree for malaria example?
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F2.png" width="100%"&gt;
+
+---
+# Limitation of decision tree model and alternative model
+
+.pull-left[
+
+### Limitation of the decision tree model
+
+- Assuming events occur one time
+
+- The decision tree could be very complicated for modelling long-term prognosis, related to chronic diseases
+
+]
+
+.pull-right[
+
+### Alterative: Markov states representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F3.png" width="80%"&gt;
+
+]
+
+---
+background-image: url("libs/pic/S6-F4.png")
+background-size: 50%
+background-position: 80% 80%
+
+# What is Markov Model
+
+- A Markov chain (discrete-time Markov chain) named after Andrey Markov, is a mathematical system that undergoes transitions from one state to another, among a finite or countable number of possible states
+
+- Example of the health states: Healthy, Sick, and dead
+
+- Transition among states
+
+---
+# What happen after 5 years 
+
+Suppose at the beginning of first year, there are  1000 healthy people: [1000 0 0]
+
+Transition matrix: 
+
+`$$\begin{bmatrix}
+0.80 &amp; 0.15 &amp; 0.05 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.00 &amp; 0.00 &amp; 1.00 \\
+\end{bmatrix}$$`
+
+Status at the end of the first year:
+
+`$$\begin{bmatrix}1000 &amp; 0 &amp; 0 \\
+\end{bmatrix}*
+\begin{bmatrix}
+0.80 &amp; 0.15 &amp; 0.05 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.00 &amp; 0.00 &amp; 1.00 \\
+\end{bmatrix} =
+\begin{bmatrix}
+800 &amp; 150 &amp; 50 \\
+\end{bmatrix}$$`
+---
+# Markov model continue... 
+
+Status at the end after 2 years: 
+`$$\begin{bmatrix}
+800 &amp; 150 &amp; 50 \\ 
+\end{bmatrix}* 
+\begin{bmatrix}
+0.80 &amp; 0.15 &amp; 0.05 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.00 &amp; 0.00 &amp; 1.00 \\
+\end{bmatrix} \newline
+= \begin{bmatrix}
+1000 &amp; 0 &amp; 0 \\
+\end{bmatrix} * \begin{bmatrix}
+0.80 &amp; 0.15 &amp; 0.05 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.00 &amp; 0.00 &amp; 1.00 \\
+\end{bmatrix}^2 = 
+\begin{bmatrix}
+647.5 &amp; 225 &amp; 127.5 \\
+\end{bmatrix}$$`
+
+Status at the end after 5 years: 
+
+`$$\begin{bmatrix}
+1000 &amp; 0 &amp; 0 \\
+\end{bmatrix} * \begin{bmatrix}
+0.80 &amp; 0.15 &amp; 0.05 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.00 &amp; 0.00 &amp; 1.00 \\
+\end{bmatrix}^5 = \begin{bmatrix}
+362 &amp; 246 &amp; 392 \\
+\end{bmatrix}$$`
+
+There will be 362 healthy individuals, 246 with illness, and 292 with death.
+
+---
+# Graph of status
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F5.png" width="75%"&gt;
+
+&lt;/center&gt;
+---
+# Summary
+
+- Decision tree model is used for modeling one-time event
+
+- Markov model is useful for modelling repeated events and long-term effects
+
+- The limitation of constant transition probabilities could be addressed by specifying transition probabilities at different time point
+
+---
+class: inverse center middle 
+
+# How to construct a Markov model for cost-effectiveness analysis
+
+---
+# Principal elements
+
+.pull-left[
+
+Define mutually exclusive health states
+
+- Transient, temporary, absorbing
+
+Determine possible transitions between these health states
+
+- State transitions
+
+- Set of transition probabilities among states
+
+  - Constant, time-dependent
+
+Define clinically valid cycle length
+
+Attach utility value and/or cost to health states
+]
+
+.pull-right[
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F37.png" width = "70%"&gt;
+
+]
+---
+# Define health states: Natural history disease model
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F6.png" width="70%"&gt;
+
+&lt;/center&gt;
+
+- **Mutually exclusive** and **collectively exhaustive** health states
+
+- Best defined by actual biology/pathophysiology
+
+- Markovian assumptions:
+
+  - Homogeneity: All individuals in the same state have the same costs, quality of life, risks of transition
+
+  - Memorilessness: The current state determines future risks
+
+---
+# Determine transition probabilities
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F7.png" width="70%"&gt;
+
+&lt;/center&gt;
+
+- Transitions between health states (arrows)
+
+- The proportion that do not transition stay in current state
+
+- Risk of death at all times and from all states!
+
+- If no transition out of a state = absorbing state (i.e., death)
+
+---
+# Time and matrix representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F8.png" width="80%"&gt;
+
+
+---
+# Time and matrix representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F9.png" width="80%"&gt;
+
+---
+# Time and matrix representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F10.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+# Time and matrix representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F11.png" width="80%"&gt;
+
+&lt;/center&gt;
+---
+# Time and matrix representation
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F12.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+
+# Transition probability (status quo)
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F13.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+# Model trace
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F14.png" width="75%"&gt;
+
+&lt;/center&gt;
+
+---
+# Underlying the trace
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F15.png" width="85%"&gt;
+
+&lt;/center&gt;
+
+--
+### In excel, you can use MMULT (Matrix multiplication) to calcuate the trace
+
+---
+# Excel demonstration
+
+.pull-left[
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:400px; "&gt;&lt;table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Health status by years&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Year &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Healthy &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Ill &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Dead &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.31 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.39 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.47 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.54 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.61 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.66 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.79 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.82 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.07 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.06 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.06 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.89 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.92 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.93 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.94 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.95 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.96 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.96 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.97 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.97 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+]
+.pull-right[
+
+&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+# Cycle Length
+
+Divides the overall analysis into smaller time periods for modelling
+
+Short enough that for a given disease being modeled
+
+The chance of two events/transitions occurring in one cycle is essentially 0
+
+- Many applications: weekly or monthly
+
+- Some (e.g., ICU) may hourly or daily
+
+---
+# Quality Adjusted Life Years (QALYS) &amp; quality-of-life weights
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F16.png" width="75%"&gt;
+
+&lt;/center&gt;
+---
+background-image:url("libs/pic/S6-F16.png")
+background-size: 20%
+background-position: 100% 0%
+
+# Valuing outcomes
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F17.png" width="75%"&gt;
+
+&lt;/center&gt;
+
+`$$\text{QALYs} = \sum_{t=0}^{T}[(propH_t*qH)+(propS_t*qS)+(propD_t*qD)]$$`
+`$$\text{Costs} = \sum_{t=0}^{T}[(propH_t*cH)+(propS_t*cS)+(propD_t*cD)]$$`
+---
+# Intervention? 
+
+&lt;center&gt;
+
+&lt;image src="libs/pic/S6-F10.png" width="75%"&gt;
+
+&lt;/center&gt;
+
+---
+
+# Transition probability differences 
+
+.pull-left[
+
+&lt;image src="libs/pic/S6-F19.png" width="100%"&gt;
+
+&lt;center&gt; 
+
+### Control
+
+]
+
+.pull-right[
+
+&lt;image src="libs/pic/S6-F20.png" width="100%"&gt;
+
+&lt;center&gt; 
+### Intervention
+
+]
+---
+# Without intervention
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F21.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+
+# With intervention
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F22.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+# Properties of a Markov Model
+
+Individuals are always in one of a finite number of health states
+
+Events are modeled as transitions from one state to another
+
+Time spent in each health state determines overall expected outcome
+
+- Living longer without disease yields higher life expectancy and quality adjusted life expectancy
+
+During each cycle of the model, individuals may make a transition from one state to another
+
+---
+# Assumptions 
+
+Probability of transition depends only on current health state residence and not on past health states
+
+Health state definitions should include all relevant history
+
+- History of precancerous lesion
+
+- History of acute myocardial infarction
+
+- Time since HIV seroconversion
+
+---
+# Common Methods of Evaluation 
+
+### Cohort simulation
+
+- Hypothetical cohort of patients transition through the model simultaneously
+
+### Monte Carlo simulation
+
+- First order simulation randomly selects a patient from the hypothetical cohort and they transit through the model one at a time (First micro-simulation)
+
+- The matrix becomes the probability of an individual transition from one state to another instead of the % of those in a given state who deterministically flow into another state
+
+---
+class: inverse middle center 
+
+# TreeAge for a Markov model
+
+---
+# Building a Markov cycle tree 
+
+Step1: Define states and build the skeleton of the cycle tree
+
+Step 2: Select tree preference: cost-effectiveness analysis
+
+Step 3: Define variables and assign values 
+
+- Cycle length and termination condition
+
+- Define variables
+
+- Assign variables for 
+
+  - Initial probabilities and cycle length
+
+  - Transition probabilities
+
+  - Rewards/tolls (initial rewards, incremental rewards, and final rewards) and discounting
+
+Step 4: Implement the analysis
+
+Step 5: Report accurate cost and effectiveness
+
+---
+
+# Markov decision tree (Cycle tree)
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F23.png" width="80%"&gt;
+
+&lt;/center&gt;
+
+---
+# Health states
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F24.png" width="65%"&gt;
+
+&lt;/center&gt;
+
+---
+# Step 1: build the skeleton of Markov cycle tree
+
+Starts with **decision note**
+
+Then adds **Markov node** (most cases)
+
+Adds branches that are health states starting each cycle
+
+- The number of the branches equals to the number of health states
+
+- The health states show the start of each cycle
+
+Subtree of each health state models all possible outcomes for an individual starting a cycle in that state
+
+Terminal nodes return individual to a health state to start next cycle
+---
+background-image: url("libs/pic/S6-F25.png")
+background-size: 10%
+background-position: 100% 0%
+
+# Instruction 
+
+Define Markov node with: &lt;image src="libs/pic/S6-F26.png" width="8%"&gt;
+
+Double-click on the Markov node to add two branches (Markov health states), and we need three branches (as we have three health states)
+
+Enter node label text for each Markov state
+
+Double-clinic the chance node to add subtrees
+
+At the terminal node, specify the jump state
+
+- It is different from simple decision tree model, where we need to specify payoffs at the terminal node. 
+
+---
+# Select Markov node
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F27.png" width="75%"&gt;
+
+&lt;/center&gt;
+
+---
+# Transition subtrees
+
+Model structure for what can happen within a cycle
+
+- Evens
+
+- Each Markov state has its own transition subtree
+
+- Structure and transition probabilities drive the cohort through the transition subtree
+
+- Terminal nodes at end of subtree direct cohort to health states to start the next cycle
+
+- Absorbing state (usually dead) do not have a transition subtree or jump states
+
+---
+
+# Terminate the transition subtree: Instructions
+
+Right click the terminal nodes `\(\to\)` Select jump state
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F28.png" width="55%"&gt;
+
+&lt;/center&gt;
+
+---
+background-image: url("libs/pic/S6-F29.png")
+background-size: 60%
+background-position: 95% 80%
+
+# Step 2: Select CEA model from tree preferences
+
+Choose tree &gt; Tree preferences from the menu
+
+Select the category calculation &gt; Calculation Method
+
+Select Cost-effectiveness (use default active payoffs)
+
+Select the category calculation &gt; numeric formatting
+
+Enter settings as desired
+
+Click **OK** to save the changes
+
+---
+
+&lt;center&gt; 
+
+&lt;image src="libs/pic/S6-F30.png" width="75%"&gt;
+
+&lt;/center&gt;
+---
+# Step 3: Define variables and assign values
+
+Cycle length and termination condition
+
+Define variables
+
+Assign variables for 
+  
+  - Initial probabilities
+  
+  - Transition probabilities
+  
+  - Rewards/tolls (initial rewards, incremental rewards, and final rewards) and discounting
+
+---
+background-image: url("libs/pic/S6-F31.png")
+background-size: 30%
+background-position: 95% 80%
+
+# Cycle length and termination condition: Markov node
+
+Termination condition indicates when to stop processing
+
+  - Evaluated before each cycle – analysis stops when true
+  
+  - Frequently a function of _stage
+  
+  - _stage = 0 during the first cycle
+  
+  - To run for 20 cycles: _stage = 20
+
+Can run until entire cohort is dead
+
+Be careful if prob of death never reach 100%
+
+Multiple conditions: &amp;, |
+
+---
+# Define variables
+
+Variables for initial probabilities and cycle length
+
+Variables for transition probabilities 
+
+Variables for rewards (include cost and effectiveness)
+
+Other variables such as discounting rate
+
+---
+background-image: url("libs/pic/S6-F33.png"), url("libs/pic/S6-F32.png")
+background-size: 40%, 40%
+background-position: 95% 5%, 95% 95%
+
+# Possible variables 
+
+Initial probability and cycle length
+
+- Pnm (1) , Pcm (0), Pd (0); Cycle(0.25)
+
+Transition probability
+
+  - Pnn (0.75), Pnc (0.20), Pnd (0.05)
+  
+  - Pcn(0.80), Pcc(0.05), Pcd(0.15)
+  
+  - Pdn (0.00), Pdc(0.00), Pdd (1.00)
+
+Rewards (cost and effectiveness)
+
+Discount rate
+
+  - Dr (3%/year)
+
+---
+
+background-image: url("libs/pic/S6-F34.png"), url("libs/pic/S6-F33.png")
+background-size: 20%, 25%
+background-position: 60% 55%, 95% 55%
+
+# Rewards under the Health States
+
+.pull-left[
+
+State rewards accumulate value (cost, eff) by cycle
+
+- Cost of treatment person with that state’s condition
+
+- Utility (for QALYs) associated with the health state
+
+Rewards..
+
+- Initial: for the first cycle (often same as incremental)
+
+  - Initiation reward is assigned only in the first cycle, Stage 0, 
+
+  - only to individuals that spending stage 0 in that state
+
+- Incremental: for every subsequent cycle
+
+- Final: after the last cycle (usually 0)
+
+  - Assign after the process is over to individuals 
+  
+  - Ending up in that state
+]
+
+.pull-right[
+Variables for rewards
+
+  - Cost: Cnm(0), Ccm(5), Cdeath (0)
+  
+  - Effectiveness: Qnm(1), Qcm(0.6), Qdeath(0)
+  ]
+
+---
+# Variable summary
+
+Initial probability
+
+- Pnm (1) , Pcm (0), Pd (0)
+
+Transition probability
+
+  - Pnn (0.75), Pnc (0.20), Pnd (0.05)
+  
+  - Pcn(0.80), Pcc(0.05), Pcd(0.15)
+  
+  - Pdn (0.00), Pdc(0.00), Pdd (1.00)
+
+Rewards (cost and effectiveness)
+
+  - Cost: Cnm(0), Ccm(5), Cdeath (0)
+  
+  - Effectiveness: Qnm(1), Qcm(0.6), Qdeath(0)
+
+Annual discount rate
+
+  - Dr (3%/year) which is equivalent to 0.074%/quarter
+
+---
+background-image: url("libs/pic/S6-F35.png"), url("libs/pic/S6-F36.png")
+background-size: 35%, 45%
+background-position: 95% 5%, 95% 75%
+
+
+# Transition subtrees
+
+Transition rewards (cost, eff) are associated with events in subtree
+
+  - i.e. operation, adverse event, screening test cost and/or disutility
+  
+  - Allocated to cohort that passes through that node in the subtree (not everyone starting cycle in state)
+
+Use extra payoff to count transitions to the dead state
+
+Instruction:
+
+  - Select the node
+  
+  - Choose view `\(\to\)` Markov info
+
+---
+# Assign variables to the corresponding nodes 
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F37.png" width = "70%"&gt;
+
+---
+# For intervention group: cycle tree
+
+Copy the Markov branch from Status quo and paste it to the Markov node in the intervention strategy
+
+Change the parameters based on the assumptions
+
+  - One prevention strategy, which costs $0.2/person/cycle, could reduce the incidence of malaria by 50% 
+  
+  - An the new treatment of could increase the cure rate from 80% to 85%, and reduce case fatality rate of malaria by 50%.
+  
+  - The treatment cost does not change 
+---
+
+# Markov structure for intervention strategy
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F38.png" width = "70%"&gt;
+
+---
+# Step 4: Implement CEA with Markov model 
+
+Select root node
+
+Choose analysis &gt; Cost-effectiveness analysis from the menu
+
+Click Yes
+
+- A cost-effectiveness analysis graph will be created
+
+Click the Text Report Link
+
+- The cost-effectiveness calculations are displayed
+
+---
+# Step 5: Report accurate cost and effectiveness
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F39.png" width = "100%"&gt;
+
+---
+# Graph 
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F40.png" width = "80%"&gt;
+
+---
+# Markov analysis for particular Markov node
+
+- Select the Markov node
+
+- Choose Analysis &gt; Markov Cohort &gt; Markov Cohort (Quick)
+
+---
+# Markov Cohort Output
+
+.pull-left[
+StateProb for each state
+
+Reward product for each state/cycle
+
+]
+
+.pull-right[
+
+Sum of reward products for all states
+
+Total EV (all States, all Cycles)
+]
+
+&lt;center&gt;
+
+&lt;image src = "libs/pic/S6-F41.png" width = "70%"&gt;
+
+---
+class: center middle
+
+.Large[# Thank you!]
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg> : [wz192@georgetown.edu](mailto:wz192@georgetown.edu)
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> : [@wuzengcn](@wuzengcn)
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
