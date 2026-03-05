@@ -177,11 +177,11 @@ There will be 362 healthy individuals, 246 with illness, and 292 with death.
 ---
 # Summary
 
-- Decision tree model is used for modeling one-time event
+- Decision tree model is used for modeling .red[one-time event]
 
-- Markov model is useful for modelling repeated events and long-term effects
+- Markov model is useful for modelling .red[repeated] events and .red[long-term] effects
 
-- The limitation of constant transition probabilities could be addressed by specifying transition probabilities at different time point
+- The limitation of constant transition probabilities could be addressed by specifying .red[transition probabilities] at different time point
 
 ---
 class: inverse center middle 
@@ -193,21 +193,21 @@ class: inverse center middle
 
 .pull-left[
 
-Define mutually exclusive health states
+Define mutually .red[exclusive] health states
 
 - Transient, temporary, absorbing
 
-Determine possible transitions between these health states
+Determine possible .red[transitions] between these health states
 
 - State transitions
 
-- Set of transition probabilities among states
+- Set of .red[transition probabilities] among states
 
-  - Constant, time-dependent
+  - .red[Constant], .red[time-dependent]
 
-Define clinically valid cycle length
+Define clinically valid .red[cycle] length
 
-Attach utility value and/or cost to health states
+Attach .red[utility] value and/or .red[cost] to health states
 ]
 
 .pull-right[
@@ -251,7 +251,7 @@ Attach utility value and/or cost to health states
 
 - Risk of death at all times and from all states!
 
-- If no transition out of a state = absorbing state (i.e., death)
+- If no transition out of a state = .red[absorbing state] (i.e., death)
 
 ---
 # Time and matrix representation
@@ -609,6 +609,12 @@ The chance of two events/transitions occurring in one cycle is essentially 0
 
 - Some (e.g., ICU) may hourly or daily
 
+.center[
+
+.red[most commonly is annually] 
+
+]
+
 ---
 # Quality Adjusted Life Years (QALYS) &amp; quality-of-life weights
 
@@ -685,9 +691,9 @@ background-position: 100% 0%
 ---
 # Properties of a Markov Model
 
-Individuals are always in one of a finite number of health states
+Individuals are always in one of a .red[finite] number of health states
 
-Events are modeled as transitions from one state to another
+Events are modeled as .red[transitions] from one state to another
 
 Time spent in each health state determines overall expected outcome
 
@@ -698,9 +704,9 @@ During each cycle of the model, individuals may make a transition from one state
 ---
 # Assumptions 
 
-Probability of transition depends only on current health state residence and not on past health states
+Probability of transition depends only on current health state residence and .red[not on past health states]
 
-Health state definitions should include all relevant history
+Health state definitions should .red[include all] relevant history
 
 - History of precancerous lesion
 
@@ -717,7 +723,7 @@ Health state definitions should include all relevant history
 
 ### Monte Carlo simulation
 
-- First order simulation randomly selects a patient from the hypothetical cohort and they transit through the model one at a time (First micro-simulation)
+- .red[First order] simulation .red[randomly] selects a patient from the hypothetical cohort and they transit through the model one .red[at a time] (First micro-simulation)
 
 - The matrix becomes the probability of an individual transition from one state to another instead of the % of those in a given state who deterministically flow into another state
 
@@ -729,23 +735,23 @@ class: inverse middle center
 ---
 # Building a Markov cycle tree 
 
-Step1: Define states and build the skeleton of the cycle tree
+Step1: .red[Define states] and build the .red[skeleton] of the cycle tree
 
-Step 2: Select tree preference: cost-effectiveness analysis
+Step 2: Select tree .red[preference]: cost-effectiveness analysis
 
-Step 3: Define variables and assign values 
+Step 3: Define .red[variables] and assign .red[values] 
 
-- Cycle length and termination condition
+- .red[Cycle length] and termination condition
 
-- Define variables
+- Define .red[variables]
 
 - Assign variables for 
 
-  - Initial probabilities and cycle length
+  - .red[Initial probabilities] and .red[cycle length]
 
-  - Transition probabilities
+  - .red[Transition probabilities]
 
-  - Rewards/tolls (initial rewards, incremental rewards, and final rewards) and discounting
+  - .red[Rewards/tolls] (initial rewards, incremental rewards, and final rewards) and discounting
 
 Step 4: Implement the analysis
 
@@ -783,9 +789,9 @@ Adds branches that are health states starting each cycle
 
 - The health states show the start of each cycle
 
-Subtree of each health state models all possible outcomes for an individual starting a cycle in that state
+.red[Subtree] of each health state models .red[all possible outcomes] for an individual starting a cycle in that state
 
-Terminal nodes return individual to a health state to start next cycle
+.red[Terminal nodes] return individual to a health state to start next cycle
 ---
 background-image: url("libs/pic/S6-F25.png")
 background-size: 10%
@@ -817,7 +823,7 @@ At the terminal node, specify the jump state
 ---
 # Transition subtrees
 
-Model structure for what can happen within a cycle
+Model structure for what can happen .red[within a cycle]
 
 - Evens
 
@@ -895,9 +901,9 @@ Termination condition indicates when to stop processing
   
   - Frequently a function of _stage
   
-  - _stage = 0 during the first cycle
+  - .red[_stage] = 0 during the first cycle
   
-  - To run for 20 cycles: _stage = 20
+  - To run for 20 cycles: .red[_stage] = 20
 
 Can run until entire cohort is dead
 
@@ -915,6 +921,10 @@ Variables for transition probabilities
 Variables for rewards (include cost and effectiveness)
 
 Other variables such as discounting rate
+
+&lt;center&gt;
+
+.red[.large[ always use variables for assigning values]]
 
 ---
 background-image: url("libs/pic/S6-F33.png"), url("libs/pic/S6-F32.png")
@@ -1059,7 +1069,7 @@ Change the parameters based on the assumptions
 ---
 # Step 4: Implement CEA with Markov model 
 
-Select root node
+Select .red[root] node
 
 Choose analysis &gt; Cost-effectiveness analysis from the menu
 
